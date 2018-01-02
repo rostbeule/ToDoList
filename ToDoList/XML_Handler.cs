@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
 namespace ToDoList
 {
-    class XML_Handler
+    public class XML_Handler
     {
         public List<XML_Handler> calendar = new List<XML_Handler>();
 
@@ -149,6 +146,6 @@ namespace ToDoList
                     MessageBox.Show(node.Value);
                     break;
             }
-        }        
+        }                        
     }
 }
