@@ -36,6 +36,8 @@
             this.BtnAdd = new System.Windows.Forms.Button();
             this.TxtCalendar = new System.Windows.Forms.TextBox();
             this.BtnRemove = new System.Windows.Forms.Button();
+            this.LstDate = new System.Windows.Forms.ListBox();
+            this.ChkLstEntries = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // button1
@@ -109,11 +111,30 @@
             this.BtnRemove.UseVisualStyleBackColor = true;
             this.BtnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
             // 
-            // Form1
+            // LstDate
+            // 
+            this.LstDate.FormattingEnabled = true;
+            this.LstDate.Location = new System.Drawing.Point(135, 202);
+            this.LstDate.Name = "LstDate";
+            this.LstDate.Size = new System.Drawing.Size(120, 95);
+            this.LstDate.TabIndex = 8;
+            this.LstDate.SelectedIndexChanged += new System.EventHandler(this.LstDate_SelectedIndexChanged);
+            // 
+            // ChkLstEntries
+            // 
+            this.ChkLstEntries.FormattingEnabled = true;
+            this.ChkLstEntries.Location = new System.Drawing.Point(261, 203);
+            this.ChkLstEntries.Name = "ChkLstEntries";
+            this.ChkLstEntries.Size = new System.Drawing.Size(298, 94);
+            this.ChkLstEntries.TabIndex = 9;
+            // 
+            // Concept
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(612, 497);
+            this.Controls.Add(this.ChkLstEntries);
+            this.Controls.Add(this.LstDate);
             this.Controls.Add(this.BtnRemove);
             this.Controls.Add(this.TxtCalendar);
             this.Controls.Add(this.BtnAdd);
@@ -122,7 +143,7 @@
             this.Controls.Add(this.LblOut);
             this.Controls.Add(this.BtnRead);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "Concept";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -140,6 +161,8 @@
         private System.Windows.Forms.Button BtnAdd;
         private System.Windows.Forms.TextBox TxtCalendar;
         private System.Windows.Forms.Button BtnRemove;
+        private System.Windows.Forms.ListBox LstDate;
+        private System.Windows.Forms.CheckedListBox ChkLstEntries;
     }
 }
 

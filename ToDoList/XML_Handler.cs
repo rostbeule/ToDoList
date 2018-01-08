@@ -101,6 +101,9 @@ namespace ToDoList
 
         public void Read()
         {
+            // vorherige Einträge löschen
+            calendar.Clear();
+
             XmlDocument doc = new XmlDocument();
             doc.Load("todolist.xml");
 
@@ -120,9 +123,9 @@ namespace ToDoList
                         int index = 0;
                         string date = node.Name.Substring(3);
                         string[] entries = new string[node.ChildNodes.Count];
-                        
+
                         // Ereignisse
-                        foreach (XmlNode child in node.ChildNodes)                        
+                        foreach (XmlNode child in node.ChildNodes)
                             foreach (XmlAttribute attr in child.Attributes)
                             {
                                 entries[index] = attr.InnerText;
@@ -130,7 +133,7 @@ namespace ToDoList
                             }
 
                         // Füge Objekt (Tag) Liste hinzu
-                        XML_Handler Day = new XML_Handler(date, entries);                        
+                        XML_Handler Day = new XML_Handler(date, entries);
                         calendar.Add(Day);
                     }
 
@@ -146,6 +149,32 @@ namespace ToDoList
                     MessageBox.Show(node.Value);
                     break;
             }
-        }                        
+        }
+
+        public void Remove(string dateNode, string entryAttribute)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load("todolist.xml");
+
+            // Wähle Knoten (Datum)
+            XmlNode node = doc.SelectSingleNode("//day" + dateNode);
+
+            if(node.ChildNodes.Count == 1)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
+
+            if (node.ChildNodes.Count >= 2)
+            {
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    foreach (XmlAttribute attr in child.Attributes)
+                        if (attr.Value == entryAttribute)
+                            node.RemoveChild(child);
+                }
+            }
+
+            doc.Save("todolist.xml");
+        }
     }
 }

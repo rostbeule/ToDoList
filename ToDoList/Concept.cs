@@ -17,7 +17,7 @@ namespace ToDoList
         {
             //TransparencyKey = BackColor;
         }
-        
+
         // Erzeuge neue XML Datei
         private void BtnCreate_Click(object sender, EventArgs e)
         {
@@ -29,7 +29,7 @@ namespace ToDoList
             }
             else
                 MessageBox.Show("File bereits vorhanden");
-        }        
+        }
 
         // Neuer Kalendereintrag
         private void BtnAdd_Click(object sender, EventArgs e)
@@ -42,7 +42,9 @@ namespace ToDoList
         {
             // Zurücksetzen
             LblOut.Text = string.Empty;
-            
+            LstDate.Items.Clear();
+            ChkLstEntries.Items.Clear();
+
             // File einlesen
             XML.Read();
 
@@ -50,23 +52,40 @@ namespace ToDoList
             XML.calendar.Sort(new SortAscending());
 
             // Einträge ausgeben
-            foreach (XML_Handler Day in XML.calendar)
+            foreach (XML_Handler day in XML.calendar)
             {
-                LblOut.Text += Day.Date + Environment.NewLine;
+                LstDate.Items.Add(day.Date);
 
-                foreach(string entry in Day.Entries)
+                LblOut.Text += day.Date + Environment.NewLine;
+
+                foreach (string entry in day.Entries)
                 {
                     LblOut.Text += entry + Environment.NewLine;
                 }
 
                 LblOut.Text += Environment.NewLine;
-            }           
+            }
         }
 
-        // todo...
+        // Entrferne ausgewählten eintrag
         private void BtnRemove_Click(object sender, EventArgs e)
         {
+            // Mehrfachauswahl möglich, rückwärts löschen
+            for (int i = ChkLstEntries.CheckedItems.Count - 1; i >= 0; i--)
+            {
+                XML.Remove(LstDate.SelectedItem.ToString(), ChkLstEntries.CheckedItems[i].ToString());                
+            }
+        }
 
+        // Hole Einträge für ausgewähltes Datum
+        private void LstDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChkLstEntries.Items.Clear();
+
+            foreach (string entry in XML.calendar[LstDate.SelectedIndex].Entries)
+            {
+                ChkLstEntries.Items.Add(entry);
+            }
         }
     }
 }
