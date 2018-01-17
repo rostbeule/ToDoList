@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ToDoList
 {
-    public class SortAscending : IComparer<XML_Handler>
+    public class SortAscending : IComparer<Calendar>
     {
-        public int Compare(XML_Handler day1, XML_Handler day2)
+        public int Compare(Calendar day1, Calendar day2)
         {
-            if (day1 is XML_Handler && day2 is XML_Handler)
+            if (day1 is Calendar && day2 is Calendar)
             {
                 string[] day1arr = day1.Date.Split('.');
                 string[] day2arr = day2.Date.Split('.');

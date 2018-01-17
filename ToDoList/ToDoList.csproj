@@ -45,18 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SortAscending.cs" />
-    <Compile Include="Concept.cs">
+    <Compile Include="HiddenWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Concept.Designer.cs">
-      <DependentUpon>Concept.cs</DependentUpon>
+    <Compile Include="HiddenWindow.Designer.cs">
+      <DependentUpon>HiddenWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SortAscending.cs" />
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XML_Handler.cs" />
-    <EmbeddedResource Include="Concept.resx">
-      <DependentUpon>Concept.cs</DependentUpon>
+    <Compile Include="Calendar.cs" />
+    <EmbeddedResource Include="HiddenWindow.resx">
+      <DependentUpon>HiddenWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -79,6 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileStore\FileStore.csproj">
+      <Project>{a21b69e0-e30c-4904-bff7-1fedb3c78dc2}</Project>
+      <Name>FileStore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

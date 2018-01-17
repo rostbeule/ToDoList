@@ -5,19 +5,19 @@ using System.Xml;
 
 namespace ToDoList
 {
-    public class XML_Handler
+    public class Calendar
     {
-        public List<XML_Handler> calendar = new List<XML_Handler>();
+        public List<Calendar> calendar = new List<Calendar>();
 
         private string date;
         private string[] entries;
 
-        public XML_Handler()
+        public Calendar()
         {
 
         }
 
-        private XML_Handler(string date, string[] entries)
+        private Calendar(string date, string[] entries)
         {
             this.date = date;
             this.entries = entries;
@@ -55,48 +55,62 @@ namespace ToDoList
             newFile.Close();
         }
 
-        public void AddEntry(string date, string entry)
+        public bool AddEntry(string date, string entry)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.Load("todolist.xml");
+            // check for dublicates (better performance with hash-table?)
+            foreach (Calendar day in calendar)            
+                if (day.Date == date)                
+                    foreach (string dateEntry in day.Entries)                    
+                        if (dateEntry == entry)                        
+                            return false;
 
-            // Wurzelknoten abfragen -> nur einer pro XML erlaubt
-            XmlNode root = doc.DocumentElement;
-
-            // Prüfe ob Knoten (Datum) bereits vorhanden
-            XmlNode node = doc.SelectSingleNode("//day" + date);
-
-            // wenn Knoten bereits vorhanden
-            if (node != null)
+            try
             {
-                MessageBox.Show(date + " bereits vorhanden");
+                XmlDocument doc = new XmlDocument();
+                doc.Load("todolist.xml");
 
-                // Unterknoten (Eintrag) erzeugen
-                XmlElement newEntry = doc.CreateElement("entry");
-                newEntry.SetAttribute("note", entry);
+                // Wurzelknoten abfragen -> nur einer pro XML erlaubt
+                XmlNode root = doc.DocumentElement;
 
-                // Knoten anhängen
-                node.AppendChild(newEntry);
+                // Prüfe ob Knoten (Datum) bereits vorhanden
+                XmlNode node = doc.SelectSingleNode("//day" + date);
+
+                // wenn Knoten bereits vorhanden
+                if (node != null)
+                {
+                    // Unterknoten (Eintrag) erzeugen
+                    XmlElement newEntry = doc.CreateElement("entry");
+                    newEntry.SetAttribute("note", entry);
+
+                    // Knoten anhängen
+                    node.AppendChild(newEntry);
+                }
+
+                // wenn Knoten noch nicht vorhanden
+                else
+                {
+                    // Neuen Knoten (Datum) erzeugen
+                    XmlElement newNode = doc.CreateElement("day" + date);
+
+                    // Unterknoten (Eintrag) erzeugen
+                    XmlElement newEntry = doc.CreateElement("entry");
+                    newEntry.SetAttribute("note", entry);
+
+                    // Knoten anhängen
+                    newNode.AppendChild(newEntry);
+                    root.AppendChild(newNode);
+                }
+
+                doc.Save("todolist.xml");
+
+                return true;
             }
-
-            // wenn Knoten noch nicht vorhanden
-            else
+            catch (XmlException ex)
             {
-                MessageBox.Show(date + " noch nicht vorhanden");
+                MessageBox.Show(ex.Message);
 
-                // Neuen Knoten (Datum) erzeugen
-                XmlElement newNode = doc.CreateElement("day" + date);
-
-                // Unterknoten (Eintrag) erzeugen
-                XmlElement newEntry = doc.CreateElement("entry");
-                newEntry.SetAttribute("note", entry);
-
-                // Knoten anhängen
-                newNode.AppendChild(newEntry);
-                root.AppendChild(newNode);
+                return false;
             }
-
-            doc.Save("todolist.xml");
         }
 
         public void Read()
@@ -133,7 +147,7 @@ namespace ToDoList
                             }
 
                         // Füge Objekt (Tag) Liste hinzu
-                        XML_Handler Day = new XML_Handler(date, entries);
+                        Calendar Day = new Calendar(date, entries);
                         calendar.Add(Day);
                     }
 
@@ -156,14 +170,16 @@ namespace ToDoList
             XmlDocument doc = new XmlDocument();
             doc.Load("todolist.xml");
 
-            // Wähle Knoten (Datum)
+            // select node in XML document
             XmlNode node = doc.SelectSingleNode("//day" + dateNode);
 
+            // delete parent node
             if(node.ChildNodes.Count == 1)
             {
                 node.ParentNode.RemoveChild(node);
             }
 
+            // delete child node
             if (node.ChildNodes.Count >= 2)
             {
                 foreach (XmlNode child in node.ChildNodes)

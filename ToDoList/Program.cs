@@ -16,7 +16,7 @@ namespace ToDoList
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Concept());
+            Application.Run(new MainWindow());
         }
     }
 }
